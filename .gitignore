@@ -43,3 +43,8 @@ deployment/*.log
 deployment/build/
 deployment/dist/
 deployment/*.spec
+
+.ipynb_checkpoints/
+experiments/validation_report/
+
+.agents/
