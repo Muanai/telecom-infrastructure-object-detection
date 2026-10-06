@@ -4,6 +4,6 @@ names:
   2: MyRepublic
   3: Lintasarta
   4: CBN
-path: /kaggle/input/telecomunication-provider-infrastructure-synthetic
+path: C:\Workspace\projects\ml\real-world-telecom-infrastructure-object-detection\data\processed
 train: images/train
 val: images/val
