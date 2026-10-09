@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Lineage &amp; Synthetic Integrity Policy · Architecture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #2d3142;
+      --color-ink:     #f5f5f5;
+      --color-muted:   #bfc0c0;
+      --color-accent:  #f08a59;
+      --color-link:    #6a95d8;
+      --color-danger:  #e05252;
+      --font-sans:     'Geist', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-mono:     'Geist Mono', ui-monospace, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .frame {
+      max-width: 1220px;
+      width: 100%;
+    }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 2.4vw + 0.8rem, 2.2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+
+    .scroll-container {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid rgba(245, 245, 245, 0.10);
+      border-radius: 8px;
+      background: #2d3142;
+    }
+
+    svg {
+      width: 100%;
+      min-width: 1100px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Data Governance · MLOps Lineage &amp; Evaluation Integrity</p>
+    <h1>Data Lineage &amp; Synthetic Containment Policy</h1>
+
+    <div class="scroll-container">
+      <svg viewBox="0 0 1100 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="lineage-title lineage-desc">
+        <title id="lineage-title">Data Lineage and Synthetic Containment Policy</title>
+        <desc id="lineage-desc">Diagram showing real-world data curation, stratified splitting, and containment policy where synthetic data is injected strictly into training while validation remains 100 percent real-world.</desc>
+        <defs>
+          <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="0.9" fill="rgba(245,245,245,0.10)"/>
+          </pattern>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#bfc0c0"/>
+          </marker>
+          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#f08a59"/>
+          </marker>
+          <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#6a95d8"/>
+          </marker>
+        </defs>
+
+        <!-- Canvas Background -->
+        <rect width="100%" height="100%" fill="#2d3142"/>
+        <rect width="100%" height="100%" fill="url(#dots)" opacity="0.55"/>
+
+        <!-- Zones -->
+        <!-- Zone 1: Raw & Ingestion -->
+        <rect x="40" y="80" width="280" height="328" rx="8"
+              fill="rgba(245,245,245,0.03)" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <rect x="52" y="84" width="124" height="12" rx="2" fill="#2d3142"/>
+        <text x="114" y="93" fill="rgba(245,245,245,0.35)" font-size="7" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.14em">01 · INGESTION &amp; CURATION</text>
+
+        <!-- Zone 2: Splitting & Synthesis -->
+        <rect x="360" y="80" width="300" height="328" rx="8"
+              fill="rgba(245,245,245,0.03)" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <rect x="372" y="84" width="144" height="12" rx="2" fill="#2d3142"/>
+        <text x="444" y="93" fill="rgba(245,245,245,0.35)" font-size="7" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.14em">02 · SPLIT &amp; AUGMENTATION</text>
+
+        <!-- Zone 3: Target Splits & Policy Guard -->
+        <rect x="700" y="80" width="360" height="328" rx="8"
+              fill="rgba(245,245,245,0.03)" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <rect x="712" y="84" width="148" height="12" rx="2" fill="#2d3142"/>
+        <text x="786" y="93" fill="rgba(245,245,245,0.35)" font-size="7" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.14em">03 · INTEGRITY ENFORCEMENT</text>
+
+        <!-- Connectors (drawn before nodes) -->
+        <!-- Connector 1: Raw -> Curated (vertical straight) -->
+        <line x1="180" y1="192" x2="180" y2="236" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Connector 2: Curated -> Stratified Split (two-bend right-up) -->
+        <path d="M 296,272 H 332 Q 340,272 340,264 V 164 Q 340,156 348,156 H 384"
+              fill="none" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Connector 3: Stratified Split -> Real Train Split (horizontal straight, accent) -->
+        <line x1="636" y1="140" x2="724" y2="140" stroke="#f08a59" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+
+        <!-- Connector 4: Stratified Split -> Real Val Split (orthogonal two-bend right-down) -->
+        <path d="M 636,172 H 672 Q 680,172 680,180 V 248 Q 680,256 688,256 H 724"
+              fill="none" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Connector 5: Synthetic Ingest -> Train Set Only (orthogonal two-bend right-up, link blue) -->
+        <path d="M 636,260 H 656 Q 664,260 664,252 V 180 Q 664,172 672,172 H 724"
+              fill="none" stroke="#6a95d8" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+
+        <!-- Connector 6: Blocked path: Synthetic -> Validation Barrier (forbidden route) -->
+        <line x1="636" y1="288" x2="692" y2="288" stroke="#e05252" stroke-width="1.4" stroke-dasharray="4,3"/>
+        <line x1="692" y1="280" x2="692" y2="296" stroke="#e05252" stroke-width="2.5"/>
+
+        <!-- Connector 7: Val Set -> Evaluation Integrity Guard (vertical straight) -->
+        <line x1="860" y1="308" x2="860" y2="336" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Connector Masks & Labels -->
+        <!-- Label 1: Filter & CVAT -->
+        <rect x="134" y="206" width="92" height="12" rx="2" fill="#2d3142"/>
+        <text x="180" y="215" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">FILTER &amp; CVAT</text>
+
+        <!-- Label 2: 157 Images -->
+        <rect x="306" y="206" width="68" height="12" rx="2" fill="#2d3142"/>
+        <text x="340" y="215" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">COCO 1.0</text>
+
+        <!-- Label 3: Real Train (Accent) -->
+        <rect x="646" y="128" width="72" height="12" rx="2" fill="#2d3142"/>
+        <text x="682" y="137" fill="#f08a59" font-size="8" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">125 REAL</text>
+
+        <!-- Label 4: Real Val (Muted) -->
+        <rect x="652" y="206" width="56" height="12" rx="2" fill="#2d3142"/>
+        <text x="680" y="215" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">32 REAL</text>
+
+        <!-- Label 5: Synthetic Ingest (+12 Syn) -->
+        <rect x="636" y="234" width="56" height="12" rx="2" fill="#2d3142"/>
+        <text x="664" y="243" fill="#6a95d8" font-size="7.5" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">+12 SYN</text>
+
+        <!-- Label 6: Blocked Barrier Notice -->
+        <rect x="638" y="296" width="64" height="12" rx="2" fill="#2d3142"/>
+        <text x="670" y="305" fill="#e05252" font-size="7" font-weight="600" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">BLOCKED</text>
+
+        <!-- Label 7: Verify Metric -->
+        <rect x="834" y="316" width="52" height="12" rx="2" fill="#2d3142"/>
+        <text x="860" y="325" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">EVALUATE</text>
+
+        <!-- Nodes -->
+        <!-- Node 1: Raw Street Captures -->
+        <rect x="64" y="120" width="232" height="72" rx="6" fill="#2d3142"/>
+        <rect x="64" y="120" width="232" height="72" rx="6" fill="rgba(191,192,192,0.10)" stroke="#8e98ac" stroke-width="1"/>
+        <rect x="76" y="130" width="42" height="12" rx="2" fill="transparent" stroke="rgba(142,140,131,0.40)" stroke-width="0.8"/>
+        <text x="97" y="139" fill="#8e98ac" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SOURCE</text>
+        <text x="284" y="180" fill="rgba(245,245,245,0.06)" font-size="32" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="end">01</text>
+        <text x="180" y="158" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Field Street Captures</text>
+        <text x="180" y="176" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">399 raw images · real-world</text>
+
+        <!-- Node 2: Curated & Schema Check -->
+        <rect x="64" y="236" width="232" height="72" rx="6" fill="#2d3142"/>
+        <rect x="64" y="236" width="232" height="72" rx="6" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <rect x="76" y="246" width="40" height="12" rx="2" fill="transparent" stroke="rgba(245,245,245,0.40)" stroke-width="0.8"/>
+        <text x="96" y="255" fill="#f5f5f5" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CURATE</text>
+        <text x="180" y="274" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Curated Real Dataset</text>
+        <text x="180" y="292" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">157 images · Datumaro COCO</text>
+
+        <!-- Node 3: Stratified Splitter -->
+        <rect x="384" y="120" width="252" height="72" rx="6" fill="#2d3142"/>
+        <rect x="384" y="120" width="252" height="72" rx="6" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <rect x="396" y="130" width="40" height="12" rx="2" fill="transparent" stroke="rgba(245,245,245,0.40)" stroke-width="0.8"/>
+        <text x="416" y="139" fill="#f5f5f5" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SPLIT</text>
+        <text x="624" y="180" fill="rgba(245,245,245,0.06)" font-size="32" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="end">02</text>
+        <text x="510" y="158" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Stratified Splitter</text>
+        <text x="510" y="176" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">Per-class balance (5 providers)</text>
+
+        <!-- Node 4: Synthetic Generator (Lintasarta Boost) -->
+        <rect x="384" y="236" width="252" height="72" rx="6" fill="#2d3142"/>
+        <rect x="384" y="236" width="252" height="72" rx="6" fill="rgba(106,149,216,0.08)" stroke="#6a95d8" stroke-width="1"/>
+        <rect x="396" y="246" width="44" height="12" rx="2" fill="transparent" stroke="rgba(106,149,216,0.50)" stroke-width="0.8"/>
+        <text x="418" y="255" fill="#6a95d8" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SYNTH</text>
+        <text x="624" y="296" fill="rgba(106,149,216,0.10)" font-size="32" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="end">03</text>
+        <text x="510" y="274" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">AI Generative Imagery</text>
+        <text x="510" y="292" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">12 synthetic Lintasarta poles</text>
+
+        <!-- Node 5: Training Dataset (Focal 1 - Coral) -->
+        <rect x="724" y="120" width="272" height="72" rx="6" fill="#2d3142"/>
+        <rect x="724" y="120" width="272" height="72" rx="6" fill="rgba(240,138,89,0.08)" stroke="#f08a59" stroke-width="1"/>
+        <rect x="736" y="130" width="44" height="12" rx="2" fill="transparent" stroke="rgba(240,138,89,0.50)" stroke-width="0.8"/>
+        <text x="758" y="139" fill="#f08a59" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">TARGET</text>
+        <text x="984" y="180" fill="rgba(240,138,89,0.10)" font-size="32" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="end">04</text>
+        <text x="860" y="158" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Augmented Training Set</text>
+        <text x="860" y="176" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">137 images (125 real + 12 synth)</text>
+
+        <!-- Node 6: Validation Dataset (Focal 2 - Coral) -->
+        <rect x="724" y="236" width="272" height="72" rx="6" fill="#2d3142"/>
+        <rect x="724" y="236" width="272" height="72" rx="6" fill="rgba(240,138,89,0.08)" stroke="#f08a59" stroke-width="1"/>
+        <rect x="736" y="246" width="48" height="12" rx="2" fill="transparent" stroke="rgba(240,138,89,0.50)" stroke-width="0.8"/>
+        <text x="760" y="255" fill="#f08a59" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">100% REAL</text>
+        <text x="984" y="296" fill="rgba(240,138,89,0.10)" font-size="32" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="end">05</text>
+        <text x="860" y="274" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Pure Real Validation Set</text>
+        <text x="860" y="292" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">32 images · zero synthetic data</text>
+
+        <!-- Node 7: Evaluation Integrity Guard -->
+        <rect x="724" y="336" width="272" height="52" rx="6" fill="#2d3142"/>
+        <rect x="724" y="336" width="272" height="52" rx="6" fill="rgba(245,245,245,0.05)" stroke="#bfc0c0" stroke-width="1"/>
+        <rect x="736" y="342" width="40" height="12" rx="2" fill="transparent" stroke="rgba(191,192,192,0.50)" stroke-width="0.8"/>
+        <text x="756" y="351" fill="#bfc0c0" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">POLICY</text>
+        <text x="860" y="360" fill="#f5f5f5" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Unbiased Generalization Guard</text>
+        <text x="860" y="375" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">mAP scores reflect true field robustness</text>
+
+        <!-- Legend Strip -->
+        <line x1="40" y1="428" x2="1060" y2="428" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <text x="40" y="444" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+
+        <!-- Legend Item 1: Focal Targets -->
+        <rect x="40" y="460" width="14" height="10" rx="2" fill="rgba(240,138,89,0.08)" stroke="#f08a59" stroke-width="1"/>
+        <text x="60" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Focal Target Split</text>
+
+        <!-- Legend Item 2: Pipeline Step -->
+        <rect x="180" y="460" width="14" height="10" rx="2" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <text x="200" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Curated / Splitting Engine</text>
+
+        <!-- Legend Item 3: Synthetic Booster -->
+        <rect x="360" y="460" width="14" height="10" rx="2" fill="rgba(106,149,216,0.08)" stroke="#6a95d8" stroke-width="1"/>
+        <text x="380" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Synthetic Ingestion (Minority)</text>
+
+        <!-- Legend Item 4: Real Data Flow -->
+        <line x1="570" y1="465" x2="598" y2="465" stroke="#f08a59" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+        <text x="606" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Primary Real Split Flow</text>
+
+        <!-- Legend Item 5: Permitted Synthetic Flow -->
+        <line x1="755" y1="465" x2="783" y2="465" stroke="#6a95d8" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+        <text x="791" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Permitted Train-Only Ingress</text>
+
+        <!-- Legend Item 6: Forbidden / Blocked Barrier -->
+        <line x1="945" y1="465" x2="965" y2="465" stroke="#e05252" stroke-width="1.4" stroke-dasharray="3,2"/>
+        <line x1="965" y1="460" x2="965" y2="470" stroke="#e05252" stroke-width="2"/>
+        <text x="975" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Blocked Leakage Barrier</text>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>
