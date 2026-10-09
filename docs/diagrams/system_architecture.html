@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telecom Infrastructure Object Detection · System Architecture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #2d3142;
+      --color-ink:     #f5f5f5;
+      --color-muted:   #bfc0c0;
+      --color-accent:  #f08a59;
+      --font-sans:     'Geist', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-mono:     'Geist Mono', ui-monospace, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .frame {
+      max-width: 1220px;
+      width: 100%;
+    }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 2.4vw + 0.8rem, 2.2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+
+    .scroll-container {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid rgba(245, 245, 245, 0.10);
+      border-radius: 8px;
+      background: #2d3142;
+    }
+
+    svg {
+      width: 100%;
+      min-width: 1100px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Architecture · Telkomsel MLOps & Geo-Analytics</p>
+    <h1>Telecom Infrastructure Detection System</h1>
+
+    <div class="scroll-container">
+      <svg viewBox="0 0 1100 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="telecom-arch-title telecom-arch-desc">
+        <title id="telecom-arch-title">Telecom Infrastructure Object Detection Architecture</title>
+        <desc id="telecom-arch-desc">End-to-end architecture diagram showing field data ingestion, high-resolution YOLOv8 training, model checkpoint generation, and offline desktop GIS reverse-geocoding deployment.</desc>
+        <defs>
+          <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="0.9" fill="rgba(245,245,245,0.10)"/>
+          </pattern>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#bfc0c0"/>
+          </marker>
+          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#f08a59"/>
+          </marker>
+          <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#6a95d8"/>
+          </marker>
+        </defs>
+
+        <!-- Canvas Background -->
+        <rect width="100%" height="100%" fill="#2d3142"/>
+        <rect width="100%" height="100%" fill="url(#dots)" opacity="0.55"/>
+
+        <!-- Zones (drawn before arrows and nodes) -->
+        <!-- Zone 1: Data Pipeline -->
+        <rect x="40" y="80" width="280" height="328" rx="8"
+              fill="rgba(245,245,245,0.03)" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <rect x="52" y="84" width="104" height="12" rx="2" fill="#2d3142"/>
+        <text x="104" y="93" fill="rgba(245,245,245,0.35)" font-size="7" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.14em">01 · DATA CURATION</text>
+
+        <!-- Zone 2: Model & Training Engine -->
+        <rect x="360" y="80" width="300" height="328" rx="8"
+              fill="rgba(245,245,245,0.03)" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <rect x="372" y="84" width="140" height="12" rx="2" fill="#2d3142"/>
+        <text x="442" y="93" fill="rgba(245,245,245,0.35)" font-size="7" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.14em">02 · TRAINING ENGINE</text>
+
+        <!-- Zone 3: Operational Deployment -->
+        <rect x="700" y="80" width="360" height="328" rx="8"
+              fill="rgba(245,245,245,0.03)" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <rect x="712" y="84" width="132" height="12" rx="2" fill="#2d3142"/>
+        <text x="778" y="93" fill="rgba(245,245,245,0.35)" font-size="7" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.14em">03 · GIS DEPLOYMENT</text>
+
+        <!-- Connectors (drawn before nodes) -->
+        <!-- Connector 1: Field Captures -> Curation (vertical straight) -->
+        <line x1="180" y1="192" x2="180" y2="236" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Connector 2: Curation -> Training (orthogonal two-bend right-up) -->
+        <path d="M 296,272 H 332 Q 340,272 340,264 V 164 Q 340,156 348,156 H 384"
+              fill="none" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Connector 3: Training -> Model Artifact (vertical straight, accent) -->
+        <line x1="510" y1="192" x2="510" y2="236" stroke="#f08a59" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+
+        <!-- Connector 4: Model Artifact -> Desktop App (orthogonal two-bend right-up, accent) -->
+        <path d="M 636,272 H 672 Q 680,272 680,264 V 164 Q 680,156 688,156 H 724"
+              fill="none" stroke="#f08a59" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+
+        <!-- Connector 5: Overhead Ingest route: Field Imagery -> Desktop App (link blue) -->
+        <path d="M 200,120 V 58 Q 200,50 208,50 H 852 Q 860,50 860,58 V 120"
+              fill="none" stroke="#6a95d8" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+
+        <!-- Connector 6: BPS Vector Map -> Desktop App (vertical straight) -->
+        <line x1="860" y1="224" x2="860" y2="192" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Connector 7: BPS Vector Map -> CSV Export (vertical straight) -->
+        <line x1="860" y1="284" x2="860" y2="316" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Connector 8: Detection stream: Desktop App -> CSV Export (orthogonal detour on right edge) -->
+        <path d="M 996,164 H 1028 Q 1036,164 1036,172 V 336 Q 1036,344 1028,344 H 996"
+              fill="none" stroke="#bfc0c0" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+
+        <!-- Connector Masks & Labels -->
+        <!-- Label 1: Filter & XML -->
+        <rect x="136" y="206" width="88" height="12" rx="2" fill="#2d3142"/>
+        <text x="180" y="215" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">FILTER &amp; XML</text>
+
+        <!-- Label 2: YOLO Format -->
+        <rect x="306" y="206" width="68" height="12" rx="2" fill="#2d3142"/>
+        <text x="340" y="215" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">YOLO FMT</text>
+
+        <!-- Label 3: Train & Val -->
+        <rect x="472" y="206" width="76" height="12" rx="2" fill="#2d3142"/>
+        <text x="510" y="215" fill="#f08a59" font-size="8" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">100 EPOCHS</text>
+
+        <!-- Label 4: Load PT -->
+        <rect x="646" y="206" width="68" height="12" rx="2" fill="#2d3142"/>
+        <text x="680" y="215" fill="#f08a59" font-size="8" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">LOAD PT</text>
+
+        <!-- Label 5: Batch Images (Overhead) -->
+        <rect x="494" y="44" width="92" height="12" rx="2" fill="#2d3142"/>
+        <text x="540" y="53" fill="#6a95d8" font-size="8" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">FIELD IMAGES</text>
+
+        <!-- Label 6: Spatial Join -->
+        <rect x="820" y="202" width="80" height="12" rx="2" fill="#2d3142"/>
+        <text x="860" y="211" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">POINT-IN-POLYGON</text>
+
+        <!-- Label 7: Spatial Aggregate -->
+        <rect x="824" y="294" width="72" height="12" rx="2" fill="#2d3142"/>
+        <text x="860" y="303" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">AGGREGATE</text>
+
+        <!-- Label 8: Detections (Beside vertical segment at x=1036) -->
+        <rect x="1013" y="248" width="46" height="12" rx="2" fill="#2d3142"/>
+        <text x="1036" y="257" fill="#8e98ac" font-size="7" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">PRED CSV</text>
+
+        <!-- Nodes -->
+        <!-- Node 1: Raw Street Captures -->
+        <rect x="64" y="120" width="232" height="72" rx="6" fill="#2d3142"/>
+        <rect x="64" y="120" width="232" height="72" rx="6" fill="rgba(191,192,192,0.10)" stroke="#8e98ac" stroke-width="1"/>
+        <rect x="76" y="130" width="42" height="12" rx="2" fill="transparent" stroke="rgba(142,140,131,0.40)" stroke-width="0.8"/>
+        <text x="97" y="139" fill="#8e98ac" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">INGEST</text>
+        <text x="284" y="180" fill="rgba(245,245,245,0.06)" font-size="32" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="end">01</text>
+        <text x="180" y="158" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Street-Level Captures</text>
+        <text x="180" y="176" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">399 raw images · EXIF GPS</text>
+
+        <!-- Node 2: Curation & Annotation -->
+        <rect x="64" y="236" width="232" height="72" rx="6" fill="#2d3142"/>
+        <rect x="64" y="236" width="232" height="72" rx="6" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <rect x="76" y="246" width="40" height="12" rx="2" fill="transparent" stroke="rgba(245,245,245,0.40)" stroke-width="0.8"/>
+        <text x="96" y="255" fill="#f5f5f5" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CURATE</text>
+        <text x="180" y="274" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Curation &amp; Stratification</text>
+        <text x="180" y="292" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">157 real + 12 syn (train only)</text>
+
+        <!-- Node 3: YOLOv8 Training Engine -->
+        <rect x="384" y="120" width="252" height="72" rx="6" fill="#2d3142"/>
+        <rect x="384" y="120" width="252" height="72" rx="6" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <rect x="396" y="130" width="48" height="12" rx="2" fill="transparent" stroke="rgba(245,245,245,0.40)" stroke-width="0.8"/>
+        <text x="420" y="139" fill="#f5f5f5" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">ENGINE</text>
+        <text x="624" y="180" fill="rgba(245,245,245,0.06)" font-size="32" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="end">02</text>
+        <text x="510" y="158" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">YOLOv8s High-Res Engine</text>
+        <text x="510" y="176" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">1248px · physics-based aug</text>
+
+        <!-- Node 4: Production Model Artifact (Focal 1 - Coral) -->
+        <rect x="384" y="236" width="252" height="72" rx="6" fill="#2d3142"/>
+        <rect x="384" y="236" width="252" height="72" rx="6" fill="rgba(240,138,89,0.08)" stroke="#f08a59" stroke-width="1"/>
+        <rect x="396" y="246" width="52" height="12" rx="2" fill="transparent" stroke="rgba(240,138,89,0.50)" stroke-width="0.8"/>
+        <text x="422" y="255" fill="#f08a59" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">WEIGHTS</text>
+        <text x="624" y="296" fill="rgba(240,138,89,0.10)" font-size="32" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="end">03</text>
+        <text x="510" y="274" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Production Model (best.pt)</text>
+        <text x="510" y="292" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">mAP50: 0.763 · 5 provider classes</text>
+
+        <!-- Node 5: Desktop GIS Analyzer (Focal 2 - Coral) -->
+        <rect x="724" y="120" width="272" height="72" rx="6" fill="#2d3142"/>
+        <rect x="724" y="120" width="272" height="72" rx="6" fill="rgba(240,138,89,0.08)" stroke="#f08a59" stroke-width="1"/>
+        <rect x="736" y="130" width="44" height="12" rx="2" fill="transparent" stroke="rgba(240,138,89,0.50)" stroke-width="0.8"/>
+        <text x="758" y="139" fill="#f08a59" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CLIENT</text>
+        <text x="984" y="180" fill="rgba(240,138,89,0.10)" font-size="32" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="end">04</text>
+        <text x="860" y="158" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Desktop GIS App (PyQt6)</text>
+        <text x="860" y="176" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">InferenceWorker QThread · EXIF</text>
+
+        <!-- Node 6: BPS Vector Maps -->
+        <rect x="724" y="224" width="272" height="60" rx="6" fill="#2d3142"/>
+        <rect x="724" y="224" width="272" height="60" rx="6" fill="rgba(245,245,245,0.05)" stroke="#bfc0c0" stroke-width="1"/>
+        <rect x="736" y="232" width="44" height="12" rx="2" fill="transparent" stroke="rgba(191,192,192,0.50)" stroke-width="0.8"/>
+        <text x="758" y="241" fill="#bfc0c0" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SPATIAL</text>
+        <text x="860" y="252" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">BPS Boundary Vector (SHP)</text>
+        <text x="860" y="270" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">Batas Kelurahan / Kecamatan (WADMKC)</text>
+
+        <!-- Node 7: CSV Business Export -->
+        <rect x="724" y="316" width="272" height="64" rx="6" fill="#2d3142"/>
+        <rect x="724" y="316" width="272" height="64" rx="6" fill="rgba(245,245,245,0.03)" stroke="rgba(245,245,245,0.30)" stroke-width="1"/>
+        <rect x="736" y="324" width="44" height="12" rx="2" fill="transparent" stroke="rgba(245,245,245,0.22)" stroke-width="0.8"/>
+        <text x="758" y="333" fill="#8e98ac" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">OUTPUT</text>
+        <text x="860" y="346" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Regional Analytics Report</text>
+        <text x="860" y="364" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">detection_results_kecamatan.csv</text>
+
+        <!-- Legend Strip -->
+        <line x1="40" y1="428" x2="1060" y2="428" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <text x="40" y="444" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+
+        <!-- Legend Item 1: Focal -->
+        <rect x="40" y="460" width="14" height="10" rx="2" fill="rgba(240,138,89,0.08)" stroke="#f08a59" stroke-width="1"/>
+        <text x="60" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Focal / Core Artifact</text>
+
+        <!-- Legend Item 2: Step -->
+        <rect x="200" y="460" width="14" height="10" rx="2" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <text x="220" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Pipeline Engine / Step</text>
+
+        <!-- Legend Item 3: Spatial Store -->
+        <rect x="375" y="460" width="14" height="10" rx="2" fill="rgba(245,245,245,0.05)" stroke="#bfc0c0" stroke-width="1"/>
+        <text x="395" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Spatial Store / GIS Layer</text>
+
+        <!-- Legend Item 4: External Ingest -->
+        <rect x="560" y="460" width="14" height="10" rx="2" fill="rgba(191,192,192,0.10)" stroke="#8e98ac" stroke-width="1"/>
+        <text x="580" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Raw Ingestion</text>
+
+        <!-- Legend Item 5: Accent Flow -->
+        <line x1="700" y1="465" x2="728" y2="465" stroke="#f08a59" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+        <text x="736" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Model &amp; Focal Flow</text>
+
+        <!-- Legend Item 6: External Batch -->
+        <line x1="875" y1="465" x2="903" y2="465" stroke="#6a95d8" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+        <text x="911" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Image Batch Ingest</text>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>
