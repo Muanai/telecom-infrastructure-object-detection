@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Evolution &amp; Experimentation Trajectory · Timeline</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #2d3142;
+      --color-ink:     #f5f5f5;
+      --color-muted:   #bfc0c0;
+      --color-accent:  #f08a59;
+      --font-sans:     'Geist', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-mono:     'Geist Mono', ui-monospace, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .frame {
+      max-width: 1220px;
+      width: 100%;
+    }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 2.4vw + 0.8rem, 2.2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+
+    .scroll-container {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid rgba(245, 245, 245, 0.10);
+      border-radius: 8px;
+      background: #2d3142;
+    }
+
+    svg {
+      width: 100%;
+      min-width: 1080px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">R&amp;D Log · Iterative Model Engineering &amp; Optimization</p>
+    <h1>Model Evolution &amp; Experimentation Trajectory</h1>
+
+    <div class="scroll-container">
+      <svg viewBox="0 0 1080 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="timeline-title timeline-desc">
+        <title id="timeline-title">Model Evolution and Experimentation Trajectory</title>
+        <desc id="timeline-desc">Timeline of five YOLOv8 model iterations showing mAP improvements from 0.522 baseline to 0.763 production model through physics-based augmentation and high resolution.</desc>
+        <defs>
+          <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="0.9" fill="rgba(245,245,245,0.10)"/>
+          </pattern>
+        </defs>
+
+        <!-- Canvas Background -->
+        <rect width="100%" height="100%" fill="#2d3142"/>
+        <rect width="100%" height="100%" fill="url(#dots)" opacity="0.55"/>
+
+        <!-- Watermark Metrics Range (Background) -->
+        <text x="60" y="370" fill="rgba(245,245,245,0.04)" font-size="64" font-weight="600" font-family="'Geist Mono', monospace">mAP50: 0.522 → 0.763</text>
+
+        <!-- Main Baseline -->
+        <line x1="70" y1="220" x2="1010" y2="220" stroke="rgba(245,245,245,0.25)" stroke-width="1.2"/>
+
+        <!-- Start / End Axis End-caps -->
+        <line x1="70" y1="212" x2="70" y2="228" stroke="rgba(245,245,245,0.35)" stroke-width="1.2"/>
+        <line x1="1010" y1="212" x2="1010" y2="228" stroke="rgba(245,245,245,0.35)" stroke-width="1.2"/>
+
+        <!-- Event 1: v0.1 Baseline (Below) -->
+        <line x1="120" y1="220" x2="120" y2="276" stroke="rgba(245,245,245,0.30)" stroke-width="1"/>
+        <circle cx="120" cy="220" r="4.5" fill="#f5f5f5"/>
+        <text x="120" y="292" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.12em">v0.1 · mAP: 0.522</text>
+        <text x="120" y="308" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Baseline &amp; Survival</text>
+        <text x="120" y="324" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">no aug · heavy CBN bias (0.8+)</text>
+        <text x="120" y="338" fill="#8e98ac" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">MyRepublic failure (0.37)</text>
+
+        <!-- Event 2: v1.0 Standardization (Above) -->
+        <line x1="320" y1="164" x2="320" y2="220" stroke="rgba(245,245,245,0.30)" stroke-width="1"/>
+        <circle cx="320" cy="220" r="4.5" fill="#f5f5f5"/>
+        <text x="320" y="132" fill="#8e98ac" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">mosaic cuts &amp; color jitter</text>
+        <text x="320" y="146" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">reduced data memorization</text>
+        <text x="320" y="162" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Default YOLO Augmentation</text>
+        <text x="320" y="178" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.12em">v1.0 · mAP: 0.591 (+6.9%)</text>
+
+        <!-- Event 3: v1.1 Precision Engineering (Below) -->
+        <line x1="520" y1="220" x2="520" y2="276" stroke="rgba(245,245,245,0.30)" stroke-width="1"/>
+        <circle cx="520" cy="220" r="4.5" fill="#f5f5f5"/>
+        <text x="520" y="292" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.12em">v1.1 · mAP: 0.667 (+7.6%)</text>
+        <text x="520" y="308" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Physics-Based Augmentation</text>
+        <text x="520" y="324" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">stratified split · no flipud</text>
+        <text x="520" y="338" fill="#8e98ac" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">erasing=0.4 (occlusion mimic)</text>
+
+        <!-- Event 4: v2.0 Synthetic Chimera (Above, Major Focal) -->
+        <line x1="720" y1="150" x2="720" y2="220" stroke="#f08a59" stroke-width="1.2"/>
+        <circle cx="720" cy="220" r="6" fill="#f08a59"/>
+        <text x="720" y="118" fill="#8e98ac" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">100 epochs · 1024px resolution</text>
+        <text x="720" y="132" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">12 AI Lintasarta in train split</text>
+        <text x="720" y="148" fill="#f5f5f5" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Synthetic Minority Injection</text>
+        <text x="720" y="164" fill="#f08a59" font-size="8.5" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.12em">v2.0 · mAP: 0.696 (+2.9%)</text>
+
+        <!-- Event 5: v2.1 High Resolution Redemption (Below, Major Focal Production) -->
+        <line x1="930" y1="220" x2="930" y2="280" stroke="#f08a59" stroke-width="1.2"/>
+        <circle cx="930" cy="220" r="6" fill="#f08a59"/>
+        <text x="930" y="296" fill="#f08a59" font-size="8.5" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.12em">v2.1 · mAP: 0.763 (BEST)</text>
+        <text x="930" y="312" fill="#f5f5f5" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">High-Res 1248px Model</text>
+        <text x="930" y="328" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">thin cables &amp; distant poles</text>
+        <text x="930" y="342" fill="#f08a59" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">Lintasarta jumps 0.086 → 0.497</text>
+
+        <!-- Legend Strip -->
+        <line x1="40" y1="392" x2="1040" y2="392" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <text x="40" y="408" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+
+        <circle cx="52" cy="424" r="4.5" fill="#f5f5f5"/>
+        <text x="68" y="428" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Standard Iteration</text>
+
+        <circle cx="210" cy="424" r="6" fill="#f08a59"/>
+        <text x="226" y="428" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Key Breakthrough Milestone (Production Candidate)</text>
+
+        <text x="560" y="428" fill="#8e98ac" font-size="8.5" font-family="'Geist', sans-serif" font-style="italic">Cumulative mAP50 gain: +24.1 percentage points across 5 development cycles.</text>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>
