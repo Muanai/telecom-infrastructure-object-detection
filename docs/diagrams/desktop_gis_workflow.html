@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desktop GIS &amp; Spatial Join Workflow · Process</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #2d3142;
+      --color-ink:     #f5f5f5;
+      --color-muted:   #bfc0c0;
+      --color-accent:  #f08a59;
+      --color-link:    #6a95d8;
+      --font-sans:     'Geist', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-mono:     'Geist Mono', ui-monospace, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .frame {
+      max-width: 1220px;
+      width: 100%;
+    }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 2.4vw + 0.8rem, 2.2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+
+    .scroll-container {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid rgba(245, 245, 245, 0.10);
+      border-radius: 8px;
+      background: #2d3142;
+    }
+
+    svg {
+      width: 100%;
+      min-width: 1100px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Deployment Pipeline · PyQt6 Desktop Architecture</p>
+    <h1>Desktop GIS &amp; Spatial Join Inference Workflow</h1>
+
+    <div class="scroll-container">
+      <svg viewBox="0 0 1100 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="workflow-title workflow-desc">
+        <title id="workflow-title">Desktop GIS and Spatial Join Inference Workflow</title>
+        <desc id="workflow-desc">Process diagram showing asynchronous QThread worker execution in app.py, running YOLOv8 detection, PIL EXIF parsing, and Shapely spatial join against BPS administrative shapefiles.</desc>
+        <defs>
+          <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="0.9" fill="rgba(245,245,245,0.10)"/>
+          </pattern>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#bfc0c0"/>
+          </marker>
+          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#f08a59"/>
+          </marker>
+          <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#6a95d8"/>
+          </marker>
+        </defs>
+
+        <!-- Canvas Background -->
+        <rect width="100%" height="100%" fill="#2d3142"/>
+        <rect width="100%" height="100%" fill="url(#dots)" opacity="0.55"/>
+
+        <!-- Zones (Tiers) -->
+        <!-- Zone 1: Client UI & Thread Dispatch -->
+        <rect x="40" y="80" width="280" height="328" rx="8"
+              fill="rgba(245,245,245,0.03)" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <rect x="52" y="84" width="124" height="12" rx="2" fill="#2d3142"/>
+        <text x="114" y="93" fill="rgba(245,245,245,0.35)" font-size="7" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.14em">01 · GUI &amp; DISPATCH</text>
+
+        <!-- Zone 2: Parallel Extraction -->
+        <rect x="360" y="80" width="320" height="328" rx="8"
+              fill="rgba(245,245,245,0.03)" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <rect x="372" y="84" width="144" height="12" rx="2" fill="#2d3142"/>
+        <text x="444" y="93" fill="rgba(245,245,245,0.35)" font-size="7" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.14em">02 · INFERENCE WORKER</text>
+
+        <!-- Zone 3: Spatial Join & Business Export -->
+        <rect x="720" y="80" width="340" height="328" rx="8"
+              fill="rgba(245,245,245,0.03)" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <rect x="732" y="84" width="134" height="12" rx="2" fill="#2d3142"/>
+        <text x="799" y="93" fill="rgba(245,245,245,0.35)" font-size="7" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.14em">03 · GEO SPATIAL JOIN</text>
+
+        <!-- Connectors (drawn before nodes) -->
+        <!-- Connector 1: MainWindow -> InferenceWorker (vertical straight) -->
+        <line x1="180" y1="192" x2="180" y2="236" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Connector 2: Worker -> YOLO Inference (orthogonal two-bend right-up, accent) -->
+        <path d="M 296,272 H 340 Q 348,272 348,264 V 164 Q 348,156 356,156 H 384"
+              fill="none" stroke="#f08a59" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+
+        <!-- Connector 3: Worker -> EXIF Extractor (horizontal straight, link blue) -->
+        <line x1="296" y1="280" x2="384" y2="280" stroke="#6a95d8" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+
+        <!-- Connector 4: YOLO Detections -> Spatial Join (orthogonal two-bend right-down, accent) -->
+        <path d="M 656,156 H 688 Q 696,156 696,164 V 192 Q 696,200 704,200 H 744"
+              fill="none" stroke="#f08a59" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+
+        <!-- Connector 5: EXIF Coordinates -> Spatial Join (orthogonal two-bend right-up, link blue) -->
+        <path d="M 656,280 H 688 Q 696,280 696,272 V 224 Q 696,216 704,216 H 744"
+              fill="none" stroke="#6a95d8" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+
+        <!-- Connector 6: BPS Shapefile -> Spatial Join (vertical straight) -->
+        <line x1="880" y1="120" x2="880" y2="164" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Connector 7: Spatial Join -> Report Table & CSV (vertical straight, accent) -->
+        <line x1="880" y1="256" x2="880" y2="306" stroke="#f08a59" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+
+        <!-- Connector Masks & Labels -->
+        <!-- Label 1: Spawn Thread -->
+        <rect x="136" y="206" width="88" height="12" rx="2" fill="#2d3142"/>
+        <text x="180" y="215" fill="#bfc0c0" font-size="7.5" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">SPAWN THREAD</text>
+
+        <!-- Label 2: Predict Frame -->
+        <rect x="314" y="206" width="68" height="12" rx="2" fill="#2d3142"/>
+        <text x="348" y="215" fill="#f08a59" font-size="7.5" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">PREDICT</text>
+
+        <!-- Label 3: Metadata -->
+        <rect x="316" y="274" width="64" height="12" rx="2" fill="#2d3142"/>
+        <text x="348" y="283" fill="#6a95d8" font-size="7.5" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">PIL EXIF</text>
+
+        <!-- Label 4: Boxes Output -->
+        <rect x="664" y="168" width="64" height="12" rx="2" fill="#2d3142"/>
+        <text x="696" y="177" fill="#f08a59" font-size="7.5" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">OBJECTS</text>
+
+        <!-- Label 5: Lat/Lon Output -->
+        <rect x="668" y="238" width="56" height="12" rx="2" fill="#2d3142"/>
+        <text x="696" y="247" fill="#6a95d8" font-size="7.5" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">LAT / LON</text>
+
+        <!-- Label 6: Boundary Geometries -->
+        <rect x="836" y="134" width="88" height="12" rx="2" fill="#2d3142"/>
+        <text x="880" y="143" fill="#bfc0c0" font-size="7.5" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">POLYGON LAYER</text>
+
+        <!-- Label 7: Aggregate Table -->
+        <rect x="844" y="272" width="72" height="12" rx="2" fill="#2d3142"/>
+        <text x="880" y="281" fill="#f08a59" font-size="7.5" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">WRITE CSV</text>
+
+        <!-- Nodes -->
+        <!-- Node 1: MainWindow UI -->
+        <rect x="64" y="120" width="232" height="72" rx="6" fill="#2d3142"/>
+        <rect x="64" y="120" width="232" height="72" rx="6" fill="rgba(191,192,192,0.10)" stroke="#8e98ac" stroke-width="1"/>
+        <rect x="76" y="130" width="40" height="12" rx="2" fill="transparent" stroke="rgba(142,140,131,0.40)" stroke-width="0.8"/>
+        <text x="96" y="139" fill="#8e98ac" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CLIENT</text>
+        <text x="180" y="158" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">MainWindow (PyQt6)</text>
+        <text x="180" y="176" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">Folder selection · Non-blocking UI</text>
+
+        <!-- Node 2: InferenceWorker Thread -->
+        <rect x="64" y="236" width="232" height="72" rx="6" fill="#2d3142"/>
+        <rect x="64" y="236" width="232" height="72" rx="6" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <rect x="76" y="246" width="46" height="12" rx="2" fill="transparent" stroke="rgba(245,245,245,0.40)" stroke-width="0.8"/>
+        <text x="99" y="255" fill="#f5f5f5" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">WORKER</text>
+        <text x="180" y="274" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">InferenceWorker (QThread)</text>
+        <text x="180" y="292" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">Background loop · progress_signal</text>
+
+        <!-- Node 3: YOLOv8 Inference (Focal 1 - Coral) -->
+        <rect x="384" y="120" width="272" height="72" rx="6" fill="#2d3142"/>
+        <rect x="384" y="120" width="272" height="72" rx="6" fill="rgba(240,138,89,0.08)" stroke="#f08a59" stroke-width="1"/>
+        <rect x="396" y="130" width="46" height="12" rx="2" fill="transparent" stroke="rgba(240,138,89,0.50)" stroke-width="0.8"/>
+        <text x="419" y="139" fill="#f08a59" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">ENGINE</text>
+        <text x="520" y="158" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">YOLOv8 best.pt Inference</text>
+        <text x="520" y="176" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">5 provider classes · confidence scores</text>
+
+        <!-- Node 4: EXIF GPS Parser -->
+        <rect x="384" y="244" width="272" height="72" rx="6" fill="#2d3142"/>
+        <rect x="384" y="244" width="272" height="72" rx="6" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <rect x="396" y="254" width="50" height="12" rx="2" fill="transparent" stroke="rgba(245,245,245,0.40)" stroke-width="0.8"/>
+        <text x="421" y="263" fill="#f5f5f5" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">EXIF GPS</text>
+        <text x="520" y="282" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">EXIF Tag Ingestion (PIL)</text>
+        <text x="520" y="300" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">DMS to Decimal degree conversion</text>
+
+        <!-- Node 5: BPS Spatial Vector Shapefile -->
+        <rect x="744" y="100" width="272" height="48" rx="6" fill="#2d3142"/>
+        <rect x="744" y="100" width="272" height="48" rx="6" fill="rgba(245,245,245,0.05)" stroke="#bfc0c0" stroke-width="1"/>
+        <rect x="756" y="106" width="38" height="12" rx="2" fill="transparent" stroke="rgba(191,192,192,0.50)" stroke-width="0.8"/>
+        <text x="775" y="115" fill="#bfc0c0" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">VECTOR</text>
+        <text x="880" y="125" fill="#f5f5f5" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">BPS Boundary Shapefile (.shp)</text>
+        <text x="880" y="138" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">Kelurahan/Desa 10K &amp; WADMKC</text>
+
+        <!-- Node 6: Spatial Join Engine (Focal 2 - Coral) -->
+        <rect x="744" y="164" width="272" height="92" rx="6" fill="#2d3142"/>
+        <rect x="744" y="164" width="272" height="92" rx="6" fill="rgba(240,138,89,0.08)" stroke="#f08a59" stroke-width="1"/>
+        <rect x="756" y="174" width="58" height="12" rx="2" fill="transparent" stroke="rgba(240,138,89,0.50)" stroke-width="0.8"/>
+        <text x="785" y="183" fill="#f08a59" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SPATIAL JOIN</text>
+        <text x="880" y="206" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Point-in-Polygon Matcher</text>
+        <text x="880" y="224" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">GeoPandas &amp; Shapely Point(lon, lat)</text>
+        <text x="880" y="240" fill="#f08a59" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">Resolves to: Kecamatan (WADMKC)</text>
+
+        <!-- Node 7: Output Report & CSV -->
+        <rect x="744" y="306" width="272" height="68" rx="6" fill="#2d3142"/>
+        <rect x="744" y="306" width="272" height="68" rx="6" fill="rgba(245,245,245,0.03)" stroke="rgba(245,245,245,0.30)" stroke-width="1"/>
+        <rect x="756" y="314" width="44" height="12" rx="2" fill="transparent" stroke="rgba(245,245,245,0.22)" stroke-width="0.8"/>
+        <text x="778" y="323" fill="#8e98ac" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">REPORT</text>
+        <text x="880" y="340" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Consolidated Business CSV</text>
+        <text x="880" y="358" fill="#bfc0c0" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">detection_results_kecamatan.csv</text>
+
+        <!-- Legend Strip -->
+        <line x1="40" y1="428" x2="1060" y2="428" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <text x="40" y="444" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+
+        <rect x="40" y="460" width="14" height="10" rx="2" fill="rgba(240,138,89,0.08)" stroke="#f08a59" stroke-width="1"/>
+        <text x="60" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Focal Inference / Core Transformation</text>
+
+        <rect x="250" y="460" width="14" height="10" rx="2" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <text x="270" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Asynchronous Worker / Execution Step</text>
+
+        <rect x="490" y="460" width="14" height="10" rx="2" fill="rgba(245,245,245,0.05)" stroke="#bfc0c0" stroke-width="1"/>
+        <text x="510" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Vector Boundary / Output Asset</text>
+
+        <line x1="700" y1="465" x2="728" y2="465" stroke="#f08a59" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+        <text x="736" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Core Object Stream</text>
+
+        <line x1="865" y1="465" x2="893" y2="465" stroke="#6a95d8" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+        <text x="901" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">GPS Coordinates Stream</text>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>
