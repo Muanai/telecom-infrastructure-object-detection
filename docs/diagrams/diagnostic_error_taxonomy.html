@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnostic Error Taxonomy &amp; IoU Matcher · Flowchart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #2d3142;
+      --color-ink:     #f5f5f5;
+      --color-muted:   #bfc0c0;
+      --color-accent:  #f08a59;
+      --color-success: #22c55e;
+      --color-danger:  #ef4444;
+      --color-purple:  #a855f7;
+      --color-yellow:  #eab308;
+      --font-sans:     'Geist', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-mono:     'Geist Mono', ui-monospace, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .frame {
+      max-width: 1220px;
+      width: 100%;
+    }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 2.4vw + 0.8rem, 2.2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+
+    .scroll-container {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid rgba(245, 245, 245, 0.10);
+      border-radius: 8px;
+      background: #2d3142;
+    }
+
+    svg {
+      width: 100%;
+      min-width: 1000px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Phase 1 Evaluation Harness · Box Matcher Engine</p>
+    <h1>Diagnostic Error Taxonomy &amp; IoU Matching Logic</h1>
+
+    <div class="scroll-container">
+      <svg viewBox="0 0 1000 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="flowchart-title flowchart-desc">
+        <title id="flowchart-title">Diagnostic Error Taxonomy and Greedy IoU Matching Engine</title>
+        <desc id="flowchart-desc">Decision flowchart showing greedy IoU candidate matching, classifying detection outcomes into True Positive, False Positive Clutter, False Positive Confusion, and False Negative.</desc>
+        <defs>
+          <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="0.9" fill="rgba(245,245,245,0.10)"/>
+          </pattern>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#bfc0c0"/>
+          </marker>
+          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#f08a59"/>
+          </marker>
+        </defs>
+
+        <!-- Canvas Background -->
+        <rect width="100%" height="100%" fill="#2d3142"/>
+        <rect width="100%" height="100%" fill="url(#dots)" opacity="0.55"/>
+
+        <!-- Connectors (drawn before nodes) -->
+        <!-- Start -> Ingestion Step -->
+        <line x1="380" y1="84" x2="380" y2="116" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Ingestion Step -> Diamond 1 (IoU >= 0.5) -->
+        <line x1="380" y1="164" x2="380" y2="196" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Diamond 1 NO -> FP Background (right) -->
+        <line x1="500" y1="240" x2="680" y2="240" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Diamond 1 YES -> Diamond 2 (Class match?) (down, accent) -->
+        <line x1="380" y1="284" x2="380" y2="324" stroke="#f08a59" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+
+        <!-- Diamond 2 NO -> FP Confusion (right) -->
+        <line x1="500" y1="368" x2="680" y2="368" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Diamond 2 YES -> True Positive (down, focal accent) -->
+        <line x1="380" y1="412" x2="380" y2="452" stroke="#f08a59" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+
+        <!-- Unmatched GT Evaluation -> False Negative (right branch at bottom) -->
+        <path d="M 120,84 V 496 Q 120,504 128,504 H 680"
+              fill="none" stroke="#bfc0c0" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+
+        <!-- Arrow Masks & Labels -->
+        <!-- Diamond 1 NO Label -->
+        <rect x="560" y="222" width="48" height="12" rx="2" fill="#2d3142"/>
+        <text x="584" y="231" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.12em">NO / &lt;0.5</text>
+
+        <!-- Diamond 1 YES Label -->
+        <rect x="388" y="294" width="48" height="12" rx="2" fill="#2d3142"/>
+        <text x="412" y="303" fill="#f08a59" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.12em">YES ≥0.5</text>
+
+        <!-- Diamond 2 NO Label -->
+        <rect x="560" y="350" width="48" height="12" rx="2" fill="#2d3142"/>
+        <text x="584" y="359" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.12em">NO / DIFF</text>
+
+        <!-- Diamond 2 YES Label -->
+        <rect x="388" y="422" width="48" height="12" rx="2" fill="#2d3142"/>
+        <text x="412" y="431" fill="#f08a59" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.12em">YES / SAME</text>
+
+        <!-- Residual GT Label -->
+        <rect x="360" y="498" width="120" height="12" rx="2" fill="#2d3142"/>
+        <text x="420" y="507" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.12em">UNMATCHED GT SWEEP</text>
+
+        <!-- Nodes -->
+        <!-- Start Oval: Prediction Stream -->
+        <rect x="260" y="40" width="240" height="44" rx="20" fill="rgba(245,245,245,0.03)" stroke="rgba(245,245,245,0.30)" stroke-width="1"/>
+        <text x="380" y="62" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Prediction Candidate</text>
+        <text x="380" y="74" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">Sorted descending by confidence</text>
+
+        <!-- Action Step: Pairwise IoU Calculation -->
+        <rect x="250" y="116" width="260" height="48" rx="6" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <text x="380" y="138" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Greedy IoU Matching</text>
+        <text x="380" y="152" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">Identify candidate GT with max overlap</text>
+
+        <!-- Diamond 1: IoU >= 0.5? -->
+        <polygon points="380,196 500,240 380,284 260,240" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <text x="380" y="236" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">IoU ≥ 0.5 with</text>
+        <text x="380" y="250" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">unmatched GT?</text>
+
+        <!-- Error Card 1: FP Background (Clutter) -->
+        <rect x="680" y="210" width="260" height="60" rx="6" fill="rgba(239,68,68,0.06)" stroke="rgba(239,68,68,0.40)" stroke-width="1"/>
+        <rect x="692" y="218" width="76" height="12" rx="2" fill="transparent" stroke="rgba(239,68,68,0.60)" stroke-width="0.8"/>
+        <text x="730" y="227" fill="#ef4444" font-size="7" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">FP_BACKGROUND</text>
+        <text x="810" y="246" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Background Hallucination</text>
+        <text x="810" y="260" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">Tree clutter · banner · generic pole</text>
+
+        <!-- Diamond 2: Predicted Class == GT Class? -->
+        <polygon points="380,324 500,368 380,412 260,368" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <text x="380" y="364" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Predicted class</text>
+        <text x="380" y="378" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">equals GT class?</text>
+
+        <!-- Error Card 2: FP Confusion (Cross-Provider) -->
+        <rect x="680" y="338" width="260" height="60" rx="6" fill="rgba(168,85,247,0.06)" stroke="rgba(168,85,247,0.40)" stroke-width="1"/>
+        <rect x="692" y="346" width="74" height="12" rx="2" fill="transparent" stroke="rgba(168,85,247,0.60)" stroke-width="0.8"/>
+        <text x="729" y="355" fill="#a855f7" font-size="7" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">FP_CONFUSION</text>
+        <text x="810" y="374" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Cross-Provider Confusion</text>
+        <text x="810" y="388" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">e.g. CBN predicted as MyRepublic</text>
+
+        <!-- Outcome Card 3: TRUE POSITIVE (Happy Path - Coral Focal) -->
+        <rect x="250" y="452" width="260" height="68" rx="6" fill="rgba(240,138,89,0.08)" stroke="#f08a59" stroke-width="1"/>
+        <rect x="262" y="460" width="72" height="12" rx="2" fill="transparent" stroke="rgba(240,138,89,0.50)" stroke-width="0.8"/>
+        <text x="298" y="469" fill="#f08a59" font-size="7" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">TRUE_POSITIVE</text>
+        <text x="380" y="488" fill="#f5f5f5" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Accurate Detection</text>
+        <text x="380" y="504" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">Mark GT matched · Counts toward TP</text>
+
+        <!-- Error Card 4: FALSE NEGATIVE (Missed Target) -->
+        <rect x="680" y="474" width="260" height="60" rx="6" fill="rgba(234,179,8,0.06)" stroke="rgba(234,179,8,0.40)" stroke-width="1"/>
+        <rect x="692" y="482" width="78" height="12" rx="2" fill="transparent" stroke="rgba(234,179,8,0.60)" stroke-width="0.8"/>
+        <text x="731" y="491" fill="#eab308" font-size="7" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">FALSE_NEGATIVE</text>
+        <text x="810" y="510" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Uncaptured Target</text>
+        <text x="810" y="524" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">Missed thin cable · distant pole · minority class</text>
+
+        <!-- Legend Strip -->
+        <line x1="40" y1="560" x2="960" y2="560" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <text x="40" y="576" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND · DIAGNOSTIC ERROR TAXONOMY</text>
+
+        <rect x="40" y="592" width="14" height="10" rx="2" fill="rgba(240,138,89,0.08)" stroke="#f08a59" stroke-width="1"/>
+        <text x="60" y="600" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">True Positive (TP)</text>
+
+        <rect x="180" y="592" width="14" height="10" rx="2" fill="rgba(239,68,68,0.06)" stroke="#ef4444" stroke-width="1"/>
+        <text x="200" y="600" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">FP Clutter (Background)</text>
+
+        <rect x="360" y="592" width="14" height="10" rx="2" fill="rgba(168,85,247,0.06)" stroke="#a855f7" stroke-width="1"/>
+        <text x="380" y="600" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">FP Confusion (Provider Misclass)</text>
+
+        <rect x="580" y="592" width="14" height="10" rx="2" fill="rgba(234,179,8,0.06)" stroke="#eab308" stroke-width="1"/>
+        <text x="600" y="600" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">False Negative (Missed Target)</text>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>
