@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Enhancement Roadmap · Multi-Phase Architecture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #2d3142;
+      --color-ink:     #f5f5f5;
+      --color-muted:   #bfc0c0;
+      --color-accent:  #f08a59;
+      --font-sans:     'Geist', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-mono:     'Geist Mono', ui-monospace, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .frame {
+      max-width: 1220px;
+      width: 100%;
+    }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 2.4vw + 0.8rem, 2.2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+
+    .scroll-container {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid rgba(245, 245, 245, 0.10);
+      border-radius: 8px;
+      background: #2d3142;
+    }
+
+    svg {
+      width: 100%;
+      min-width: 1100px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Strategic Blueprint · Telkomsel MLOps Evolution</p>
+    <h1>Master Enhancement Roadmap (Phase 1 → Phase 3)</h1>
+
+    <div class="scroll-container">
+      <svg viewBox="0 0 1100 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="roadmap-title roadmap-desc">
+        <title id="roadmap-title">Telecom Infrastructure Master Enhancement Roadmap</title>
+        <desc id="roadmap-desc">Architectural roadmap showing Phase 1 Diagnostic Foundation, Phase 2 Model Optimization, and Phase 3 Operational Geo-Analytics Decision Engine.</desc>
+        <defs>
+          <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="0.9" fill="rgba(245,245,245,0.10)"/>
+          </pattern>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#bfc0c0"/>
+          </marker>
+          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#f08a59"/>
+          </marker>
+        </defs>
+
+        <!-- Canvas Background -->
+        <rect width="100%" height="100%" fill="#2d3142"/>
+        <rect width="100%" height="100%" fill="url(#dots)" opacity="0.55"/>
+
+        <!-- Zones -->
+        <!-- Zone 1: Phase 1 -->
+        <rect x="40" y="80" width="310" height="328" rx="8"
+              fill="rgba(245,245,245,0.03)" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <rect x="52" y="84" width="144" height="12" rx="2" fill="#2d3142"/>
+        <text x="124" y="93" fill="rgba(245,245,245,0.35)" font-size="7" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.14em">PHASE 1 · DIAGNOSTIC FOUNDATION</text>
+
+        <!-- Zone 2: Phase 2 -->
+        <rect x="390" y="80" width="320" height="328" rx="8"
+              fill="rgba(245,245,245,0.03)" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <rect x="402" y="84" width="144" height="12" rx="2" fill="#2d3142"/>
+        <text x="474" y="93" fill="rgba(245,245,245,0.35)" font-size="7" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.14em">PHASE 2 · MODEL OPTIMIZATION</text>
+
+        <!-- Zone 3: Phase 3 -->
+        <rect x="750" y="80" width="310" height="328" rx="8"
+              fill="rgba(245,245,245,0.03)" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <rect x="762" y="84" width="154" height="12" rx="2" fill="#2d3142"/>
+        <text x="839" y="93" fill="rgba(245,245,245,0.35)" font-size="7" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.14em">PHASE 3 · OPERATIONAL ANALYTICS</text>
+
+        <!-- Connectors (drawn before nodes) -->
+        <!-- Connector 1: P1 Matcher -> P1 Slicing -->
+        <line x1="195" y1="184" x2="195" y2="208" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Connector 2: P1 Slicing -> P1 Report -->
+        <line x1="195" y1="272" x2="195" y2="296" stroke="#f08a59" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+
+        <!-- Connector 3: Phase 1 -> Phase 2 Handoff (two-bend right-up) -->
+        <path d="M 326,330 H 362 Q 370,330 370,322 V 160 Q 370,152 378,152 H 414"
+              fill="none" stroke="#f08a59" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+
+        <!-- Connector 4: P2 Export -> P2 SAHI -->
+        <line x1="550" y1="184" x2="550" y2="208" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Connector 5: P2 SAHI -> P2 Profiling -->
+        <line x1="550" y1="272" x2="550" y2="296" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- Connector 6: Phase 2 -> Phase 3 Handoff (two-bend right-up) -->
+        <path d="M 686,328 H 722 Q 730,328 730,320 V 186 Q 730,178 738,178 H 774"
+              fill="none" stroke="#f08a59" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+
+        <!-- Connector 7: P3 Thresholds -> P3 Regional GIS -->
+        <line x1="905" y1="216" x2="905" y2="276" stroke="#f08a59" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+
+        <!-- Connector Masks & Labels -->
+        <!-- Label 1: IoU Output -->
+        <rect x="156" y="190" width="78" height="12" rx="2" fill="#2d3142"/>
+        <text x="195" y="199" fill="#bfc0c0" font-size="7.5" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">MATCH MATRIX</text>
+
+        <!-- Label 2: Error Catalog -->
+        <rect x="154" y="278" width="82" height="12" rx="2" fill="#2d3142"/>
+        <text x="195" y="287" fill="#f08a59" font-size="7.5" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">ERROR CATALOG</text>
+
+        <!-- Label 3: Baseline Hand-off -->
+        <rect x="336" y="234" width="68" height="12" rx="2" fill="#2d3142"/>
+        <text x="370" y="243" fill="#f08a59" font-size="7.5" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">DIAGNOSED</text>
+
+        <!-- Label 4: ONNX Graph -->
+        <rect x="514" y="190" width="72" height="12" rx="2" fill="#2d3142"/>
+        <text x="550" y="199" fill="#bfc0c0" font-size="7.5" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">QUANTIZED</text>
+
+        <!-- Label 5: Slices -->
+        <rect x="514" y="278" width="72" height="12" rx="2" fill="#2d3142"/>
+        <text x="550" y="287" fill="#bfc0c0" font-size="7.5" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">TILED INFER</text>
+
+        <!-- Label 6: Opt handoff -->
+        <rect x="696" y="246" width="68" height="12" rx="2" fill="#2d3142"/>
+        <text x="730" y="255" fill="#f08a59" font-size="7.5" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">OPTIMIZED</text>
+
+        <!-- Label 7: Spatial Aggregation -->
+        <rect x="862" y="240" width="86" height="12" rx="2" fill="#2d3142"/>
+        <text x="905" y="249" fill="#f08a59" font-size="7.5" font-family="'Geist Mono', monospace"
+              text-anchor="middle" letter-spacing="0.08em">SPATIAL JOIN</text>
+
+        <!-- Nodes -->
+        <!-- Node 1: Greedy IoU Matcher -->
+        <rect x="64" y="120" width="262" height="64" rx="6" fill="#2d3142"/>
+        <rect x="64" y="120" width="262" height="64" rx="6" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <rect x="76" y="128" width="34" height="12" rx="2" fill="transparent" stroke="rgba(245,245,245,0.40)" stroke-width="0.8"/>
+        <text x="93" y="137" fill="#f5f5f5" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">EVAL</text>
+        <text x="195" y="148" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Standardized IoU Matcher</text>
+        <text x="195" y="164" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">IoU @ 0.5 · TP · FP_BG · FP_CONF · FN</text>
+
+        <!-- Node 2: Data-Centric Slicing -->
+        <rect x="64" y="208" width="262" height="64" rx="6" fill="#2d3142"/>
+        <rect x="64" y="208" width="262" height="64" rx="6" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <rect x="76" y="216" width="38" height="12" rx="2" fill="transparent" stroke="rgba(245,245,245,0.40)" stroke-width="0.8"/>
+        <text x="95" y="225" fill="#f5f5f5" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SLICE</text>
+        <text x="195" y="236" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Data-Centric Error Slicing</text>
+        <text x="195" y="252" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">Small (&lt;32²) · Medium · Aspect ratios</text>
+
+        <!-- Node 3: Interactive HTML Report (Focal 1 - Coral) -->
+        <rect x="64" y="296" width="262" height="68" rx="6" fill="#2d3142"/>
+        <rect x="64" y="296" width="262" height="68" rx="6" fill="rgba(240,138,89,0.08)" stroke="#f08a59" stroke-width="1"/>
+        <rect x="76" y="304" width="60" height="12" rx="2" fill="transparent" stroke="rgba(240,138,89,0.50)" stroke-width="0.8"/>
+        <text x="106" y="313" fill="#f08a59" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">DELIVERABLE</text>
+        <text x="195" y="326" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Standalone HTML Diagnostic</text>
+        <text x="195" y="342" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">Dynamic SVG overlays · zero CDN deps</text>
+
+        <!-- Node 4: Quantization Pipeline -->
+        <rect x="414" y="120" width="272" height="64" rx="6" fill="#2d3142"/>
+        <rect x="414" y="120" width="272" height="64" rx="6" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <rect x="426" y="128" width="42" height="12" rx="2" fill="transparent" stroke="rgba(245,245,245,0.40)" stroke-width="0.8"/>
+        <text x="447" y="137" fill="#f5f5f5" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">EXPORT</text>
+        <text x="550" y="148" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Format &amp; Quantization Export</text>
+        <text x="550" y="164" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">PyTorch FP32 → ONNX FP16 → INT8</text>
+
+        <!-- Node 5: SAHI Tiled Inference -->
+        <rect x="414" y="208" width="272" height="64" rx="6" fill="#2d3142"/>
+        <rect x="414" y="208" width="272" height="64" rx="6" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <rect x="426" y="216" width="34" height="12" rx="2" fill="transparent" stroke="rgba(245,245,245,0.40)" stroke-width="0.8"/>
+        <text x="443" y="225" fill="#f5f5f5" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SAHI</text>
+        <text x="550" y="236" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Tiled Patch Inference</text>
+        <text x="550" y="252" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">640px sliding window · thin cable recovery</text>
+
+        <!-- Node 6: Edge Profiling Suite -->
+        <rect x="414" y="296" width="272" height="64" rx="6" fill="#2d3142"/>
+        <rect x="414" y="296" width="272" height="64" rx="6" fill="rgba(245,245,245,0.05)" stroke="#bfc0c0" stroke-width="1"/>
+        <rect x="426" y="304" width="46" height="12" rx="2" fill="transparent" stroke="rgba(191,192,192,0.50)" stroke-width="0.8"/>
+        <text x="449" y="313" fill="#bfc0c0" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">PROFILER</text>
+        <text x="550" y="324" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Comparative Benchmarking</text>
+        <text x="550" y="340" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">Latency (ms) · FPS · Size (MB) · mAP drop</text>
+
+        <!-- Node 7: Adaptive Thresholds & HITL -->
+        <rect x="774" y="140" width="262" height="76" rx="6" fill="#2d3142"/>
+        <rect x="774" y="140" width="262" height="76" rx="6" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <rect x="786" y="148" width="40" height="12" rx="2" fill="transparent" stroke="rgba(245,245,245,0.40)" stroke-width="0.8"/>
+        <text x="806" y="157" fill="#f5f5f5" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">TRIAGE</text>
+        <text x="905" y="172" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Adaptive Confidence &amp; HITL</text>
+        <text x="905" y="188" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">Per-provider F1 cutoffs · 3 tiers</text>
+        <text x="905" y="202" fill="#8e98ac" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">High (Auto) · Medium (Review) · Low (Prune)</text>
+
+        <!-- Node 8: Regional Spatial Coverage (Focal 2 - Coral) -->
+        <rect x="774" y="276" width="262" height="76" rx="6" fill="#2d3142"/>
+        <rect x="774" y="276" width="262" height="76" rx="6" fill="rgba(240,138,89,0.08)" stroke="#f08a59" stroke-width="1"/>
+        <rect x="786" y="284" width="46" height="12" rx="2" fill="transparent" stroke="rgba(240,138,89,0.50)" stroke-width="0.8"/>
+        <text x="809" y="293" fill="#f08a59" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">BI IMPACT</text>
+        <text x="905" y="308" fill="#f5f5f5" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Spatial Coverage Analytics</text>
+        <text x="905" y="324" fill="#bfc0c0" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle">BPS Kecamatan boundary aggregation</text>
+        <text x="905" y="338" fill="#f08a59" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">Competitive infrastructure share</text>
+
+        <!-- Legend Strip -->
+        <line x1="40" y1="428" x2="1060" y2="428" stroke="rgba(245,245,245,0.10)" stroke-width="0.8"/>
+        <text x="40" y="444" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+
+        <rect x="40" y="460" width="14" height="10" rx="2" fill="rgba(240,138,89,0.08)" stroke="#f08a59" stroke-width="1"/>
+        <text x="60" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Key Milestone / Strategic Deliverable</text>
+
+        <rect x="250" y="460" width="14" height="10" rx="2" fill="#393e53" stroke="#f5f5f5" stroke-width="1"/>
+        <text x="270" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Engineering Module / Pipeline Component</text>
+
+        <rect x="490" y="460" width="14" height="10" rx="2" fill="rgba(245,245,245,0.05)" stroke="#bfc0c0" stroke-width="1"/>
+        <text x="510" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Analytical Store / Benchmarking Suite</text>
+
+        <line x1="720" y1="465" x2="748" y2="465" stroke="#f08a59" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+        <text x="756" y="468" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif">Inter-Phase Strategic Hand-off</text>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>
